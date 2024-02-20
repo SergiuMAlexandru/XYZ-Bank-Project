@@ -5,13 +5,21 @@
 **Website**: https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login
 **Test Engineer**: Sergiu Marian Alexandru
 
-1. Testing Purpose
+**Features**
+1. User authentication
+2. Deposit and withdrawal functionalities:
+* Deposit and Validation
+* Withdrawal and Validation
+3. Transaction history and Validation
+
+
+1. **Testing Purpose**
 2. **Test Environment** 
 
-Operating System: Windows OS
-Browser: Chrome, Edge, Firefox
-Java: 11.0.20
-Selenium: 4.17.0
+Operating System: Windows OS  
+Browser: Chrome, Edge, Firefox   
+Java: 11.0.20   
+Selenium: 4.17.0   
 Development IDE: IntelliJ IDEA 2021.3 (Community Edition)
 
 3. **Test Scenarios** 
@@ -36,35 +44,4 @@ Development IDE: IntelliJ IDEA 2021.3 (Community Edition)
 2. Perform a deposit
 3. Read the data from the table and compare it with your deposit and see if they match.
 4. Also be able to save the data from the TransactionsHistory in a file.
-5. 
-**Features**
-1. User authentication
-2. Deposit and withdrawal functionalities:
-* Deposit and Validation
-* Withdrawal and Validation
-3. Transaction history and Validation
-4. Installation
 
-To run **XYZ Bank** locally, follow these steps:
-
-Clone the repository:
-
-bash
-Copy code
-git clone https://github.com/SergiuMAlexandru/XYZ-Bank-Project.git
-Navigate to the project directory:
-
-bash
-Copy code
-cd xyz-bank
-Install dependencies:
-
-bash
-Copy code
-npm install
-Start the application:
-
-bash
-Copy code
-npm start
-Usage
