@@ -17,8 +17,8 @@
 2. **Test Environment** 
 
 Operating System: Windows OS  
-Browser: Chrome, Edge, Firefox   
-Java: 11.0.20   
+Browser: Chrome, Edge, Firefox    
+Java: 11.0.20    
 Selenium: 4.17.0   
 Development IDE: IntelliJ IDEA 2021.3 (Community Edition)
 
