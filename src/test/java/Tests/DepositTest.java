@@ -3,16 +3,25 @@ package Tests;
 import ObjectData.CustomerLoginObject;
 import ObjectData.DepositObject;
 import Pages.CustomerLogin.CustomerLoginPage;
-import Pages.CustomerLogin.DepositPage;
 import ShareData.Hooks;
 import org.testng.annotations.Test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class DepositTest extends Hooks {
 
     @Test
-    public void testDeposit() {
-        String username = "Harry Potter";
-        double depositAmount = 150;
+    public void testDeposit() throws IOException {
+        // Load test data from properties file
+        Properties testData = new Properties();
+        FileInputStream input = new FileInputStream("src/test/resources/TestData/DepositData.properties");
+        testData.load(input);
+
+        String username = testData.getProperty("username");
+        double depositAmount = Double.parseDouble(testData.getProperty("depositAmount"));
+        double initialBalance = Double.parseDouble(testData.getProperty("initialBalance"));
 
         CustomerLoginObject customerLoginObject = new CustomerLoginObject();
         customerLoginObject.login(getDriver(), username);
@@ -20,11 +29,9 @@ public class DepositTest extends Hooks {
         CustomerLoginPage customerLoginPage = new CustomerLoginPage(getDriver());
         customerLoginPage.clickDepositButton();
 
-        DepositPage depositPage = new DepositPage(getDriver());
-        double initialBalance = Double.parseDouble(depositPage.getUserBalance());
         DepositObject depositObject = new DepositObject(getDriver());
         depositObject.depositAmount(depositAmount);
 
-        assert depositPage.validateDeposit(depositAmount, initialBalance);
+        assert depositObject.validateDeposit(depositAmount, initialBalance);
     }
 }

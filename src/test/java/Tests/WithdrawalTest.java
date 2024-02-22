@@ -34,12 +34,12 @@ public class WithdrawalTest extends Hooks {
 
 
         customerLoginPage.clickWithdrawalButton();
-//        WithdrawalObject withdrawalObject = new WithdrawalObject(getDriver());
-//        withdrawalObject.enterWithdrawAmount(withdrawalAmount);                       // #########De cercetat
+        WithdrawalObject withdrawalObject = new WithdrawalObject(getDriver());
+        withdrawalObject.enterWithdrawAmount(withdrawalAmount);                       // #########De cercetat
 //                                                                          ######Face withdraw doar fara deposit
 //
-//        WithdrawalPage withdrawalPage = new WithdrawalPage(getDriver());
-//        assertTrue(withdrawalPage.validateWithdrawal(withdrawalAmount, depositAmount),
-//                "Withdrawal validation failed");
+        WithdrawalPage withdrawalPage = new WithdrawalPage(getDriver());
+        assertTrue(withdrawalPage.validateWithdrawal(withdrawalAmount, depositAmount),
+                "Withdrawal validation failed");
     }
 }

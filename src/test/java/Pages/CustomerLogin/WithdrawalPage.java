@@ -13,7 +13,7 @@ public class WithdrawalPage extends BasePage {
         super(driver);
     }
 
-    @FindBy(css = "input.form-control[ng-model='amount']")
+    @FindBy(css = "input[type='number']")
     private WebElement withdrawalAmountInputField;
 
 

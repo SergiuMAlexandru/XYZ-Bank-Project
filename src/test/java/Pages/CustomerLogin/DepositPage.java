@@ -1,5 +1,6 @@
 package Pages.CustomerLogin;
 
+import HelpMetods.ElementMethods;
 import Logger.LoggerUtility;
 import Pages.BasePage;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +13,6 @@ public class DepositPage extends BasePage {
         super(driver);
     }
 
-
     @FindBy(css = "input[type='number'][ng-model='amount']")
     private WebElement amountInputField;
 
@@ -22,36 +22,17 @@ public class DepositPage extends BasePage {
     @FindBy(css = "div.center strong:nth-of-type(2)")
     private WebElement userBalance;
 
-
-    public WebElement getAmountInputField() {
-        return amountInputField;
-    }
-
-    public void clearAndEnterNumericText(WebElement element, String text) {
-        elementMethods.waitforElementVisibility(element);
-        LoggerUtility.info("Clearing the input field");
-        element.clear();
-        if (text.matches("[0-9]+(\\.[0-9]+)?")) {
-            LoggerUtility.info("Entering numeric text: " + text);
-            element.sendKeys(text);
-        } else {
-            LoggerUtility.error("Invalid numeric input: " + text);
-            throw new IllegalArgumentException("Invalid numeric input: " + text);
-        }
+    public void clearAndEnterNumericText(String text) {
+        elementMethods.fillElement(amountInputField, text);
     }
 
     public void clickDepositButton() {
         elementMethods.clickElement(depositButton);
-        LoggerUtility.info("Clicked on the Deposit button");
     }
 
     public String getUserBalance() {
-        elementMethods.waitforElementVisibility(userBalance);
-        String balance = userBalance.getText().trim();
-        LoggerUtility.info("Retrieved user balance: " + balance);
-        return balance;
+        return userBalance.getText().trim();
     }
-
 
     public boolean validateDeposit(double depositedAmount, double initialBalance) {
         double currentBalance = Double.parseDouble(getUserBalance());
@@ -64,4 +45,6 @@ public class DepositPage extends BasePage {
         LoggerUtility.info("Deposit validation result: " + isValid);
         return isValid;
     }
+
+
 }

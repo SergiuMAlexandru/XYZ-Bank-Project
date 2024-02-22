@@ -1,40 +1,31 @@
 package ObjectData;
 
 import Pages.CustomerLogin.DepositPage;
+import HelpMetods.ElementMethods;
 import org.openqa.selenium.WebDriver;
 
-import java.util.HashMap;
-
 public class DepositObject {
-    private WebDriver driver;
-    private final DepositPage depositPage;
 
+    private final WebDriver driver;
+    private final DepositPage depositPage;
+    private final ElementMethods elementMethods;
 
     public DepositObject(WebDriver driver) {
         this.driver = driver;
-        depositPage = new DepositPage(driver);
+        this.depositPage = new DepositPage(driver);
+        this.elementMethods = new ElementMethods(driver);
     }
 
     public void depositAmount(double amount) {
-        depositPage.clearAndEnterNumericText(depositPage.getAmountInputField(), String.valueOf(amount));
+        depositPage.clearAndEnterNumericText(String.valueOf(amount));
         depositPage.clickDepositButton();
     }
 
-//    public DepositObject (HashMap<String, String> testData){
-//        populateObject(testData);
-//
-//    }
-//
-//
-//    private void populateObject(HashMap<String, String> testData) {
-//        for (String Key : testData.keySet()) {
-//            switch (Key) {
-//                case "depositAmount":
-//                    setDepositAmount(testData.get(Key));
-//                    break;
-//
-//
-//            }
-//        }
-//    }
+    public String getUserBalance() {
+        return depositPage.getUserBalance();
+    }
+
+    public boolean validateDeposit(double depositedAmount, double initialBalance) {
+        return depositPage.validateDeposit(depositedAmount, initialBalance);
+    }
 }
