@@ -1,6 +1,5 @@
 package Pages.CustomerLogin;
 
-import HelpMetods.ElementMethods;
 import Logger.LoggerUtility;
 import Pages.BasePage;
 import org.openqa.selenium.WebDriver;

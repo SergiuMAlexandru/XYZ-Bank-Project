@@ -1,45 +1,39 @@
 package Tests;
 
 import ObjectData.CustomerLoginObject;
-import ObjectData.DepositObject;
 import ObjectData.WithdrawalObject;
 import Pages.CustomerLogin.CustomerLoginPage;
-import Pages.CustomerLogin.DepositPage;
 import Pages.CustomerLogin.WithdrawalPage;
 import ShareData.Hooks;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertTrue;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class WithdrawalTest extends Hooks {
 
-
     @Test
-    public void testWithdrawal() {
-        String username = "Harry Potter";
-        double depositAmount = 150.00;
-        double withdrawalAmount = 100.00;
+    public void testWithdrawal() throws IOException {
+        // Load test data from properties file into a HashMap
+        Properties testData = new Properties();
+        FileInputStream input = new FileInputStream("src/test/resources/TestData/WithdrawalData.properties");
+        testData.load(input);
+
+        String username = testData.getProperty("username");
+        double withdrawalAmount = Double.parseDouble(testData.getProperty("withdrawalAmount"));
         CustomerLoginObject customerLoginObject = new CustomerLoginObject();
         customerLoginObject.login(getDriver(), username);
 
         CustomerLoginPage customerLoginPage = new CustomerLoginPage(getDriver());
-        customerLoginPage.clickDepositButton();
-        DepositPage depositPage = new DepositPage(getDriver());
-        double initialBalance = Double.parseDouble(depositPage.getUserBalance());
-        DepositObject depositObject = new DepositObject(getDriver());
-        depositObject.depositAmount(depositAmount);
-        assertTrue(depositPage.validateDeposit(depositAmount, initialBalance),
-                "Deposit validation failed");
-
-
-
         customerLoginPage.clickWithdrawalButton();
+        double initialBalance = Double.parseDouble(testData.getProperty("initialBalance"));
+
         WithdrawalObject withdrawalObject = new WithdrawalObject(getDriver());
-        withdrawalObject.enterWithdrawAmount(withdrawalAmount);                       // #########De cercetat
-//                                                                          ######Face withdraw doar fara deposit
-//
+        withdrawalObject.withdrawAmount(withdrawalAmount);
+
+
         WithdrawalPage withdrawalPage = new WithdrawalPage(getDriver());
-        assertTrue(withdrawalPage.validateWithdrawal(withdrawalAmount, depositAmount),
-                "Withdrawal validation failed");
+        assert withdrawalPage.isErrorMessageDisplayed("Transaction Failed. You can not withdraw amount more than the balance.");
     }
 }

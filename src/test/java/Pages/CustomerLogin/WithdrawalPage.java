@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 
 public class WithdrawalPage extends BasePage {
 
-
     public WithdrawalPage(WebDriver driver) {
         super(driver);
     }
@@ -16,58 +15,51 @@ public class WithdrawalPage extends BasePage {
     @FindBy(css = "input[type='number']")
     private WebElement withdrawalAmountInputField;
 
-
     @FindBy(xpath = "//button[@class='btn btn-default' and text()='Withdraw']")
     private WebElement withdrawButton;
 
     @FindBy(css = "div.center strong:nth-of-type(2)")
     private WebElement userBalance;
 
+    @FindBy(css = "span.error.ng-binding")
+    private WebElement errorMessage;
 
-    public WebElement getWithdrawalAmountInputField() {
-        return withdrawalAmountInputField;
-    }
-
-    public void clearAndEnterNumericText(WebElement element, String text) {
-        elementMethods.waitforElementVisibility(element);
-        LoggerUtility.info("Clearing the input field");
-        element.clear();
-        if (text.matches("[0-9]+(\\.[0-9]+)?")) {
-            LoggerUtility.info("Entering numeric text: " + text);
-            element.sendKeys(text);
-        } else {
-            LoggerUtility.error("Invalid numeric input: " + text);
-            throw new IllegalArgumentException("Invalid numeric input: " + text);
-        }
+    public void clearAndEnterWithdrawalAmount(String amount) {
+        elementMethods.fillElement(withdrawalAmountInputField, amount);
     }
 
     public void clickWithdrawButton() {
         elementMethods.clickElement(withdrawButton);
-        LoggerUtility.info("Clicked on the Withdraw button");
     }
 
     public String getUserBalance() {
-        elementMethods.waitforElementVisibility(userBalance);
-        String balance = userBalance.getText().trim();
-        LoggerUtility.info("Retrieved user balance: " + balance);
-        return balance;
+        return userBalance.getText().trim();
     }
 
     public boolean validateWithdrawal(double withdrawnAmount, double initialBalance) {
+
+        boolean isErrorMessageDisplayed = isErrorMessageDisplayed("Transaction Failed. You can not withdraw amount more than the balance.");
+        if (isErrorMessageDisplayed) {
+            LoggerUtility.info("Error message displayed: Transaction Failed. You can not withdraw amount more than the balance.");
+            return false; // Withdrawal failed due to insufficient balance
+        }
         double currentBalance = Double.parseDouble(getUserBalance());
         double expectedBalance = initialBalance - withdrawnAmount;
-        boolean isValid = currentBalance == expectedBalance;
         LoggerUtility.info("Initial balance: " + initialBalance);
         LoggerUtility.info("Withdrawn amount: " + withdrawnAmount);
         LoggerUtility.info("Expected balance after withdrawal: " + expectedBalance);
         LoggerUtility.info("Current balance after withdrawal: " + currentBalance);
+        boolean isValid = currentBalance == expectedBalance;
         LoggerUtility.info("Withdrawal validation result: " + isValid);
-        if (isValid) {
-            LoggerUtility.info("Withdrawal validation passed. Current balance after withdrawal: " + currentBalance);
-        } else {
-            LoggerUtility.error("Withdrawal validation failed. Expected balance after withdrawal: " + expectedBalance + ", Actual balance: " + currentBalance);
-        }
         return isValid;
+    }
+
+    public boolean isErrorMessageDisplayed(String expectedErrorMessage) {
+        String actualErrorMessage = errorMessage.getText().trim();
+        LoggerUtility.info("Actual error message: " + actualErrorMessage);
+        LoggerUtility.info("Expected error message: " + expectedErrorMessage);
+        LoggerUtility.info("Error validation result: " + actualErrorMessage.equals(expectedErrorMessage));
+        return actualErrorMessage.equals(expectedErrorMessage);
     }
 
 }

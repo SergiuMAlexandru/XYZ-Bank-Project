@@ -57,7 +57,7 @@ public class CustomerLoginPage extends BasePage {
     public void selectUser(String userName) {
         Select dropdown = new Select(userSelectDropdown);
         dropdown.selectByVisibleText(userName);
-        LoggerUtility.info("User has been selected for login");
+        LoggerUtility.info("User has been selected for login: " + userName);
     }
 
     public void clickLoginButton() {
